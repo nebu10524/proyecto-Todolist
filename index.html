@@ -533,6 +533,37 @@ const exportarTareas = () => {
       };
 
       inicializarAplicacion();
+
+// 🔥 MEJORA 1 - Botón "Solo Urgentes"
+const botonMostrarUrgentes = document.createElement("button");
+botonMostrarUrgentes.id = "btnMostrarUrgentes";
+botonMostrarUrgentes.textContent = "🎯 Solo Urgentes";
+botonMostrarUrgentes.style.cssText = `
+  background: #ff6b35; 
+  color: white; 
+  padding: 10px 18px; 
+  border: none; 
+  border-radius: 8px; 
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+`;
+
+// Agregar botón después del filtro
+document.querySelector('div[style*="margin-top:15px"]').appendChild(botonMostrarUrgentes);
+
+// Función para mostrar solo tareas urgentes
+const mostrarSoloUrgentes = () => {
+  Array.from(listaElementosTarea.children).forEach(elemento => {
+    const esUrgente = elemento.dataset.prioridad === 'alta';
+    elemento.style.display = esUrgente ? 'flex' : 'none';
+  });
+  mostrarMensaje("Mostrando solo tareas urgentes 🎯", "advertencia");
+};
+
+// Agregar evento al botón
+botonMostrarUrgentes.addEventListener("click", mostrarSoloUrgentes);
+
     });
   </script>
 </body>
