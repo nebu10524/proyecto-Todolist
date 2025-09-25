@@ -564,6 +564,36 @@ const mostrarSoloUrgentes = () => {
 // Agregar evento al botón
 botonMostrarUrgentes.addEventListener("click", mostrarSoloUrgentes);
 
+// 🔥 MEJORA 2 - Botón "Estadísticas"
+const mostrarEstadisticas = () => {
+  const tareas = obtenerTareasDesdeDOM();
+  const completadas = tareas.filter(t => t.completada).length;
+  const urgentes = tareas.filter(t => t.prioridad === 'alta').length;
+  const productividad = tareas.length > 0 ? ((completadas / tareas.length) * 100).toFixed(1) : 0;
+  
+  const mensaje = `📊 Estadísticas:
+  Total: ${tareas.length} | Completadas: ${completadas}
+  Urgentes: ${urgentes} | Productividad: ${productividad}%`;
+  
+  alert(mensaje);
+};
+
+// Agregar botón de estadísticas
+const botonEstadisticas = document.createElement("button");
+botonEstadisticas.textContent = "📊 Estadísticas";
+botonEstadisticas.style.cssText = `
+  background: #17a2b8; 
+  color: white; 
+  padding: 10px 18px; 
+  border: none; 
+  border-radius: 8px; 
+  margin-top: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+`;
+botonEstadisticas.addEventListener("click", mostrarEstadisticas);
+document.querySelector('.contenedor').appendChild(botonEstadisticas);
     });
   </script>
 </body>
