@@ -618,6 +618,24 @@ observer.observe(listaElementosTarea, { childList: true, subtree: true });
 
 // Mostrar al cargar
 actualizarContador();
+
+// 🔥 Mejora: Recordatorio de Tareas Vencidas
+const verificarVencidas = () => {
+  Array.from(listaElementosTarea.children).forEach(elemento => {
+    const fechaLimite = elemento.dataset.fecha; // Ejemplo: "2025-09-25"
+    if (fechaLimite) {
+      const hoy = new Date().toISOString().split("T")[0];
+      if (fechaLimite < hoy && !elemento.classList.contains("completada")) {
+        elemento.style.backgroundColor = "#ffcccc"; // Fondo rojo claro
+        elemento.querySelector("span").textContent += " ⏰ Vencida";
+      }
+    }
+  });
+};
+
+// Ejecutar cada 10 segundos
+setInterval(verificarVencidas, 10000);
+
     });
   </script>
 </body>
