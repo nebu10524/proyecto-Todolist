@@ -594,6 +594,30 @@ botonEstadisticas.style.cssText = `
 `;
 botonEstadisticas.addEventListener("click", mostrarEstadisticas);
 document.querySelector('.contenedor').appendChild(botonEstadisticas);
+
+// 🔥 Mejora: Contador de Tareas en Tiempo Real
+const contadorTareas = document.createElement("div");
+contadorTareas.id = "contadorTareas";
+contadorTareas.style.cssText = `
+  margin-top: 15px;
+  font-weight: bold;
+  color: #444;
+`;
+document.querySelector(".contenedor").appendChild(contadorTareas);
+
+const actualizarContador = () => {
+  const tareas = obtenerTareasDesdeDOM();
+  const total = tareas.length;
+  const completadas = tareas.filter(t => t.completada).length;
+  contadorTareas.textContent = `📌 Total: ${total} | ✅ Completadas: ${completadas}`;
+};
+
+// Hook: cada vez que se cambien las tareas, se actualiza
+const observer = new MutationObserver(actualizarContador);
+observer.observe(listaElementosTarea, { childList: true, subtree: true });
+
+// Mostrar al cargar
+actualizarContador();
     });
   </script>
 </body>
