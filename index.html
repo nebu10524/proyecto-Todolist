@@ -618,19 +618,37 @@ observer.observe(listaElementosTarea, { childList: true, subtree: true });
 
 // Mostrar al cargar
 actualizarContador();
-
 // 🔥 Mejora: Recordatorio de Tareas Vencidas
 const verificarVencidas = () => {
+  let contadorVencidas = 0; // 📌 Nuevo: contar cuántas tareas vencidas hay
+
   Array.from(listaElementosTarea.children).forEach(elemento => {
     const fechaLimite = elemento.dataset.fecha; // Ejemplo: "2025-09-25"
     if (fechaLimite) {
       const hoy = new Date().toISOString().split("T")[0];
       if (fechaLimite < hoy && !elemento.classList.contains("completada")) {
         elemento.style.backgroundColor = "#ffcccc"; // Fondo rojo claro
-        elemento.querySelector("span").textContent += " ⏰ Vencida";
+
+        // Evitar duplicar mensaje si ya lo tiene
+        if (!elemento.textContent.includes("⏰ Vencida")) {
+          elemento.querySelector("span").textContent += " ⏰ Vencida";
+        }
+
+        contadorVencidas++; // sumar al contador
+      } else {
+        // Si la tarea no está vencida, restaurar color
+        elemento.style.backgroundColor = "";
       }
     }
   });
+
+  // 📌 Mostrar en consola para depuración
+  console.log(`🔎 Verificación completa: ${contadorVencidas} tareas vencidas encontradas`);
+
+  // 📌 Mostrar alerta si hay muchas vencidas
+  if (contadorVencidas > 3) {
+    mostrarMensaje(`⚠️ Atención: Tienes ${contadorVencidas} tareas vencidas`, "error");
+  }
 };
 
 // Ejecutar cada 10 segundos
